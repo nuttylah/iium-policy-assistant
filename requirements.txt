@@ -1,0 +1,9 @@
+fastapi
+uvicorn[standard]
+python-dotenv
+requests
+pymupdf
+sentence-transformers
+faiss-cpu
+scikit-learn
+supabase

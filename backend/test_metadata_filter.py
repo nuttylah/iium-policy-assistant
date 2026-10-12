@@ -24,50 +24,69 @@ questions = [
 
 for question_number, query in enumerate(questions, start=1):
 
-    print("\n" + "=" * 80)
+    print("\n" + "=" * 100)
     print(f"QUESTION {question_number}")
-    print("=" * 80)
-    print(query)
+    print("=" * 100)
+    print(f"Query: {query}")
 
-    # Extract query constraints
+    # Step 1: Extract query constraints
     constraints = extract_query_constraints(query)
 
     print("\nQUERY CONSTRAINTS")
-    print("-" * 80)
-    print(f"Nationality : {constraints['nationality']}")
-    print(f"Level       : {constraints['level']}")
-    print(f"Kulliyyah   : {constraints['kulliyyah']}")
+    print("-" * 100)
 
-    # Retrieve Top 10 using FAISS
-    results = retrieve(query, top_k=10)
+    for key, value in constraints.items():
+        print(f"{key.capitalize():<15}: {value}")
 
-    # Rerank Top 10
+    # Step 2: Retrieve candidates using FAISS
+    results = retrieve(query, top_k=30)
+
+    print(f"\nFAISS candidates retrieved: {len(results)}")
+
+    # Step 3: Rerank candidates using Cross-Encoder
     reranked_results = rerank(
         query,
         results,
-        top_k=10
+        top_k=30
     )
 
-    # Apply metadata-aware ranking
+    print(f"Candidates after reranking: {len(reranked_results)}")
+
+    # Step 4: Apply metadata filtering and ranking
     final_results = metadata_aware_rank(
         reranked_results,
         constraints
     )
 
-    print("\nFINAL METADATA-AWARE RANKING")
-    print("-" * 80)
+    print(f"Results after metadata filtering: {len(final_results)}")
 
-    for i, result in enumerate(final_results[:4], start=1):
+    print("\nFINAL METADATA-AWARE RANKING")
+    print("-" * 100)
+
+    if not final_results:
+        print(
+            "No results match all explicit metadata constraints. "
+            "Check the retrieved candidates, metadata, or increase top_k."
+        )
+        continue
+
+    for rank, result in enumerate(final_results[:4], start=1):
 
         metadata = result["metadata"]
 
+        print(f"\nRank {rank}")
+        print(f"Source          : {metadata.get('source', 'Unknown')}")
+        print(f"Page            : {metadata.get('page', 'Unknown')}")
+        print(f"Nationality     : {metadata.get('nationality', 'Unknown')}")
+        print(f"Level           : {metadata.get('level', 'Unknown')}")
+        print(f"Kulliyyah       : {metadata.get('kulliyyah', 'Unknown')}")
         print(
-            f"{i}. "
-            f"{metadata['source']} | "
-            f"Page {metadata['page']} | "
-            f"Nationality: {metadata['nationality']} | "
-            f"Level: {metadata['level']} | "
-            f"Kulliyyah: {metadata['kulliyyah']} | "
-            f"Metadata: {result['metadata_match_score']} | "
-            f"Rerank: {result['rerank_score']:.4f}"
+            f"Metadata score  : "
+            f"{result.get('metadata_match_score', 0)}"
         )
+        print(
+            f"Rerank score    : "
+            f"{result.get('rerank_score', 0.0):.4f}"
+        )
+        print(f"Text preview     : {result['text'][:500]}")
+        print("-" * 60)
