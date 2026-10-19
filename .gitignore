@@ -30,5 +30,8 @@ dist/
 data/vectorstore/
 data/all_chunks.txt
 
-# IIUM source documents
+# IIUM source documents (backend copies)
 data/documents/
+
+# Node.js dependencies
+node_modules/

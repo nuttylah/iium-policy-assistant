@@ -109,3 +109,31 @@ API credentials and private configuration files must remain outside version cont
 ## Project Status
 
 Developed as a Final Year Project at the International Islamic University Malaysia (IIUM).
+## Frontend Setup
+
+The frontend uses React, TypeScript, and Vite.
+
+From the project root, run these commands in a separate terminal:
+
+    cd frontend
+    npm install
+    npm run dev
+
+Open the local URL displayed by Vite.
+
+## Running the Full Project
+
+Run the backend and frontend in separate terminals.
+
+Backend (from the project root):
+
+    .\.venv\Scripts\Activate.ps1
+    uvicorn backend.main:app --reload
+
+Frontend:
+
+    cd frontend
+    npm install
+    npm run dev
+
+Keep API credentials in local environment files. Never commit secrets.
