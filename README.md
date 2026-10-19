@@ -101,14 +101,6 @@ For POST endpoints, submit a JSON body such as:
   "query": "What are the tuition fees for Malaysian undergraduate students?"
 }
 ```
-
-## Security Note
-
-API credentials and private configuration files must remain outside version control. Authentication, user-specific history access, and production deployment settings should be reviewed before exposing the API publicly.
-
-## Project Status
-
-Developed as a Final Year Project at the International Islamic University Malaysia (IIUM).
 ## Frontend Setup
 
 The frontend uses React, TypeScript, and Vite.
@@ -136,4 +128,10 @@ Frontend:
     npm install
     npm run dev
 
-Keep API credentials in local environment files. Never commit secrets.
+## Security Note
+
+API credentials and private configuration files must remain outside version control. Authentication, user-specific history access, and production deployment settings should be reviewed before exposing the API publicly.
+
+## Project Status
+
+Developed as a Final Year Project at the International Islamic University Malaysia (IIUM).
